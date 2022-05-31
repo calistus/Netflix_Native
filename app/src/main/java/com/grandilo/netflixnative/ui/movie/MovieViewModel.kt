@@ -1,5 +1,8 @@
 package com.grandilo.netflixnative.ui.movie
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.grandilo.netflixnative.model.MovieModel
@@ -16,12 +19,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieViewModel @Inject constructor(val repository: MovieRepository) : ViewModel() {
+    var searchKey by mutableStateOf("")
+        private set
+
     val movieState = MutableStateFlow<MovieState>(MovieState.MovieInitialState)
 
     val movieEvent = Channel<MovieEvent>().receiveAsFlow()
 
-    init {
-    }
+    init {}
 
     fun onEvent(event: MovieEvent) {
         when (event) {
@@ -31,7 +36,9 @@ class MovieViewModel @Inject constructor(val repository: MovieRepository) : View
                     withContext(Dispatchers.IO) {
                         try {
                             val movies = repository.searchMovie(event.searchKey)
-                            delay(5000)
+                            print(movies.toString())
+
+//                            delay(5000)
                             movieState.tryEmit(MovieState.MovieLoadedState(movies))
                         } catch (e: Exception) {
                             movieState.tryEmit(MovieState.MovieError(e.localizedMessage))

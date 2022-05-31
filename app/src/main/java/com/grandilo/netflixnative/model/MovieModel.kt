@@ -5,4 +5,8 @@ data class MovieModel(
     val expression: String,
     val results: List<Result>,
     val searchType: String
-)
+) {
+    override fun toString(): String {
+        return "MovieModel(errorMessage='$errorMessage', expression='$expression', results=$results, searchType='$searchType')"
+    }
+}

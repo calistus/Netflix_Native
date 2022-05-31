@@ -3,41 +3,39 @@ package com.grandilo.netflixnative
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.grandilo.netflixnative.ui.HomeScreen
+import com.grandilo.netflixnative.ui.movie.MovieDetail
 import com.grandilo.netflixnative.ui.theme.NetflixNativeTheme
+import com.grandilo.netflixnative.utils.Routes
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             NetflixNativeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = Routes.HOME
                 ) {
-                    Greeting("Android")
+                    composable(Routes.HOME) {
+                        HomeScreen(navController)
+                    }
+                    composable(Routes.MOVIE_DETAIL) {
+                        MovieDetail(imgURL = "")
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    NetflixNativeTheme {
-        Greeting("Android")
-    }
-}
+
+

@@ -6,6 +6,6 @@ import retrofit2.http.Path
 
 interface MovieRepository {
 
-    @GET("/SearchMovie/{searchKey}")
+    @GET("SearchMovie/k_l662u5kv/{searchKey}")
     suspend fun searchMovie(@Path("searchKey") searchKey:String):MovieModel
 }
